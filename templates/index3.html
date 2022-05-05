@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title></title>
+
+    <script>
+        async function callback() {
+            let Fl1 = document.getElementById('fl1').value;
+            let Fl2 = document.getElementById('fl2').value;
+            let Fl3 = document.getElementById('fl3').value;
+            let response = await fetch("/callback/getFields?field1=" + Fl1 + "&field2=" + Fl2 + "&field3=" + Fl3);
+            if (response.ok) {
+                let chartJson = await response.json();
+                Plotly.newPlot('chart',chartJson, {});
+                if (response.ok) {
+                    Plotly.newPlot('chart', chartJson, {});
+                } else {
+                    alert("HTTP-Error: " + response.status + "on getInfo");
+                }
+            } else {
+                alert("HTTP-Error: " + response.status + "on getFields");
+            }
+        }
+        function info(json) {
+            let name = document.getElementById('companyName');
+            name.innerHTML = json.shortName;
+            name = document.getElementById('symbol');
+            name.innerHTML = json.symbol;
+            name = document.getElementById('dayHigh');
+            name.innerHTML = json.dayHigh;
+            name = document.getElementById('dayLow');
+            name.innerHTML = json.dayLow;
+        }
+    </script>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col text-light bg-dark" style="margin:20px 0px 20px 0px">
+                <h1 style="padding:20px 0px 20px 0px">Data explorer</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"><b>Select first field</b></div>
+            <div class="col">
+                <select id="fl1" name= colours class="form-select" aria-label="Select" )>
+                    {% for colour in colours %}
+                    <option value= "{{colour}}" SELECTED>{{colour}}</option>"
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col"><b>second field</b></div>
+
+            <div class="col">
+                <select id="fl2" name= colours class="form-select" aria-label="Select" )>
+                    {% for colour in colours %}
+                    <option value= "{{colour}}" SELECTED>{{colour}}</option>"
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col"><b>Third field</b></div>
+
+            <div class="col">
+                <select id="fl3" class="form-select" aria-label="Select" )>
+                    {% for colour in colours %}
+                    <option value= "{{colour}}" SELECTED>{{colour}}</option>"
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary" onclick="callback()">Fetch fields</button>
+            </div>
+
+            <div class="col-9">
+                <h2 id="companyName"></h2>
+                <div id="chart" class="chart" style="height: 900px;border: 1px solid; 
+                    box-shadow: 5px 5px 5px #888888;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>callback();</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</body>
+</html>
