@@ -19,6 +19,9 @@ def cb(endpoint):
     if endpoint == "getFields":
         print(request.args.get('field1')) 
         return gm(request.args.get('field1'),request.args.get('field2'),request.args.get('field3'))
+    if endpoint == "getCorr":
+        print(request.args.get('field1'))
+        return gc(request.args.get('field1'))
 
 def gm(Fl1,Fl2,Fl3):
     print(Fl1)
@@ -42,6 +45,13 @@ def gm(Fl1,Fl2,Fl3):
     fig['layout']['yaxis3']['title']=Fl3
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
+
+def gc(Fl1):
+    print(Fl1)
+    d1p = dt.corr(method=Fl1)
+    fig = px.imshow(d1p)
+    corrJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return corrJSON
 
 if __name__ == "__main__":
     app.run()

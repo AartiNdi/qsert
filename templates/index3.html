@@ -28,6 +28,14 @@
                 alert("HTTP-Error: " + response.status + "on getFields");
             }
         }
+        async function corr_callback() {
+            let Fl1c = document.getElementById('fl1c').value;
+            let response = await fetch("/callback/getCorr?field1=" + Fl1c);
+            if (response.ok) {
+                let chartcJson = await response.json();
+                Plotly.newPlot('chartc',chartcJson, {});                
+            }
+        }
         function info(json) {
             let name = document.getElementById('companyName');
             name.innerHTML = json.shortName;
@@ -81,6 +89,26 @@
             <div class="col-9">
                 <h2 id="companyName"></h2>
                 <div id="chart" class="chart" style="height: 900px;border: 1px solid; 
+                    box-shadow: 5px 5px 5px #888888;">
+                </div>
+            </div>
+        </div>
+        <div class="row" id="corr_field">
+            <div class="col"><b>For correlation, select method</b></div>
+            <div class="col">
+                <select id="fl1c" class="form-select" aria-label="Select" )>
+                    <option value="pearson">Pearson</option>
+                    <option value="kendall">Kendall</option>
+                    <option value="spearman">Spearman</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <button type="button" class="btn btn-primary" onclick="corr_callback()">Correlate fields</button>
+            </div>
+            <div class="col-9">
+                <h2 id="companyName"></h2>
+                <div id="chartc" class="chart" style="height: 900px;border: 1px solid;
                     box-shadow: 5px 5px 5px #888888;">
                 </div>
             </div>
